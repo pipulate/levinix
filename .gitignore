@@ -1,3 +1,4 @@
+flake.lock
 *.json
 *.log.*
 *.log
