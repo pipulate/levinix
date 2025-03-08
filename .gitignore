@@ -1,7 +1,7 @@
-flake.lock
+*.ipynb
 *.json
-*.log.*
 *.log
+*.log.*
 .DS_Store
 .env
 .ipynb_checkpoints/
@@ -9,3 +9,4 @@ flake.lock
 .venv/
 .vscode/
 __pycache__/
+flake.lock

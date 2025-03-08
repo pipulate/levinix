@@ -126,7 +126,7 @@
           buildInputs = commonPackages ++ (with pkgs; pkgs.lib.optionals (builtins.pathExists "/usr/bin/nvidia-smi") cudaPackages);
           shellHook = ''
             # Set up the Python virtual environment
-            test -d .venv || ${pkgs.python313Full}/bin/python -m venv .venv
+            test -d .venv || ${pkgs.python311}/bin/python -m venv .venv
             export VIRTUAL_ENV="$(pwd)/.venv"
             export PATH="$VIRTUAL_ENV/bin:$PATH"
             # Customize the prompt to show we're in a Nix environment
@@ -153,7 +153,7 @@
           buildInputs = commonPackages;
           shellHook = ''
             # Set up the Python virtual environment
-            test -d .venv || ${pkgs.python313Full}/bin/python -m venv .venv
+            test -d .venv || ${pkgs.python311}/bin/python -m venv .venv
             export VIRTUAL_ENV="$(pwd)/.venv"
             export PATH="$VIRTUAL_ENV/bin:$PATH"
             # Customize the prompt to show we're in a Nix environment
