@@ -46,8 +46,7 @@
         # Common packages that we want available in our environment
         # regardless of the operating system
         commonPackages = with pkgs; [
-          python313Full                # Python 3.13 interpreter
-          python313Packages.virtualenv # Tool to create isolated Python environments
+          python3Full                  # Python 3.x interpreter (highest stable?)
           figlet                       # For creating ASCII art welcome messages
           tmux                         # Terminal multiplexer for managing sessions
           zlib                         # Compression library for data compression
@@ -57,6 +56,7 @@
           cmake                        # Cross-platform build system generator
           htop                         # Interactive process viewer for Unix systems
         ] ++ (with pkgs; pkgs.lib.optionals isLinux [
+          virtualenv
           gcc                          # GNU Compiler Collection for compiling C/C++ code
           stdenv.cc.cc.lib             # Standard C library for Linux systems
         ]);
@@ -126,7 +126,7 @@
           buildInputs = commonPackages ++ (with pkgs; pkgs.lib.optionals (builtins.pathExists "/usr/bin/nvidia-smi") cudaPackages);
           shellHook = ''
             # Set up the Python virtual environment
-            test -d .venv || ${pkgs.python311}/bin/python -m venv .venv
+            test -d .venv || ${pkgs.python3}/bin/python -m venv .venv
             export VIRTUAL_ENV="$(pwd)/.venv"
             export PATH="$VIRTUAL_ENV/bin:$PATH"
             # Customize the prompt to show we're in a Nix environment
@@ -153,7 +153,7 @@
           buildInputs = commonPackages;
           shellHook = ''
             # Set up the Python virtual environment
-            test -d .venv || ${pkgs.python311}/bin/python -m venv .venv
+            test -d .venv || ${pkgs.python3}/bin/python -m venv .venv
             export VIRTUAL_ENV="$(pwd)/.venv"
             export PATH="$VIRTUAL_ENV/bin:$PATH"
             # Customize the prompt to show we're in a Nix environment
