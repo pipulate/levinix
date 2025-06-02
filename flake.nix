@@ -11,6 +11,15 @@
 # reproducible development environment. It's like a recipe for your perfect workspace, ensuring
 # everyone on your team has the exact same setup, every time. As a bonus, you can use Nix flakes on
 # Windows under WSL. Plus, whatever you make will be deployable to the cloud.
+#
+# This flake offers multiple shell environments:
+# - A feature-rich interactive shell for human developers with welcome banners and verbose feedback
+# - A streamlined "quiet" shell designed specifically for AI assistants and automation tools
+#   that eliminates verbose output while maintaining identical functionality
+#
+# Access these shells with:
+# - `nix develop` (or `nix develop .#default`) for the standard interactive experience
+# - `nix develop .#quiet` for AI assistants and automation to avoid output clutter
 
 {
   # This description helps others understand the purpose of this Flake
