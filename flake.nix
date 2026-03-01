@@ -65,12 +65,14 @@
             APP="Levinix"
             if [ -f .app_identity ]; then APP=$(cat .app_identity); fi
             
-            clear
             echo "=========================================================="
             echo "  🚀 $APP is Online"
             echo "=========================================================="
             echo " The 'No Problem' stack is very good."
             echo " Type 'python server.py' (or your app's entry point) to begin."
+
+            # --- ADDED: Visual Environment Anchor ---
+            export PS1="(levinix) $PS1"
           '';
         };
       });
