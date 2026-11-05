@@ -52,7 +52,7 @@ Once the installer finishes, simply navigate into your new app directory and pul
 
 ```bash
 cd ~/MyKillerApp
-./run
+nix develop
 ```
 
 **The Genesis Event:** On the very first run, Levinix will detect that it is not yet a git repository. It will silently initialize Git, seal the environment with a Genesis commit, and build your Python `.venv` atop the immutable Nix bedrock.
