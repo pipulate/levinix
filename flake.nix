@@ -11,11 +11,15 @@
       let
         pkgs = import nixpkgs { inherit system; };
 
-        # The Bedrock Dependencies (Normalized across macOS/Linux/WSL)
-        corePackages = with pkgs; [
+        isLinux = pkgs.stdenv.isLinux;
+        # The Bedrock Dependencies (Normalized across macOS/Linux/WSL — Pure pip edition)
+        corePackages = (with pkgs; [
           git curl sqlite tmux
           (python312.withPackages (ps: with ps; [ pip virtualenv ]))
-        ];
+        ]) ++ (with pkgs; pkgs.lib.optionals isLinux [
+          gcc
+          stdenv.cc.cc.lib
+        ]);
 
         # The Magic Cookie: Git Transformation & Auto-Update
         magicCookieLogic = ''
@@ -71,6 +75,16 @@
             echo " The 'No Problem' stack is very good."
             echo " Type 'python server.py' (or your app's entry point) to begin."
 
+            ${pkgs.lib.optionalString isLinux ''
+            if command -v nvidia-smi &> /dev/null; then
+              export CUDA_HOME=${pkgs.cudatoolkit}
+              export PATH=$CUDA_HOME/bin:$PATH
+              export LD_LIBRARY_PATH=$CUDA_HOME/lib64:$LD_LIBRARY_PATH
+            fi
+            ''}
+            nix() {
+              LD_LIBRARY_PATH="" command nix "$@"
+            }
             # --- ADDED: Visual Environment Anchor ---
             export PS1="(levinix) $PS1"
           '';

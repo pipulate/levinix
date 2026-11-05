@@ -8,6 +8,8 @@
 
 # Levinix: A *very good* "No Problem" Universal Packager (NPvg)
 
+> **2026 Architecture Note:** This repository preserves the minimal (~85-line, **pure `pip` + `virtualenv`**) reference extraction of the **Magic Cookie + Nix Flake** pattern. For the standalone **`uv`-accelerated** starter flake, see **[miklevin/python_nix_flake](https://github.com/miklevin/python_nix_flake)**. For the full production **Software Von Neumann Probe** (with multi-door white-labeling, FastHTML/HTMX local server, and the Prompt Fu context compiler), see **[pipulate/pipulate](https://github.com/pipulate/pipulate)** (`pipulate.com` / `levinix.org` / `sunpug.io`).
+
 Write once run anywhere (WORA), solving the "It works on my machine" problem without the cloud.
 
 **Levinix** is the successor to Darwinix. It is a completely self-contained, auto-updating, cross-platform development environment powered by Nix Flakes. It represents a paradigm shift away from fragile Docker containers and OS-specific setup scripts. 
