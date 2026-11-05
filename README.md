@@ -37,7 +37,7 @@ We have engineered a frictionless deployment pipeline. You do not need to clone 
 To deploy a new, sovereign Levinix environment (we will call it `MyKillerApp`), simply run this command in your terminal:
 
 ```bash
-curl -L [https://levinix.com/install.sh](https://levinix.com/install.sh) | bash -s MyKillerApp
+curl -L https://levinix.com | bash -s MyKillerApp
 ```
 
 ### What happens when you run this?
