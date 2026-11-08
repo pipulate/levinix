@@ -9,12 +9,17 @@
   outputs = { self, nixpkgs, flake-utils }:
     flake-utils.lib.eachDefaultSystem (system:
       let
-        pkgs = import nixpkgs { inherit system; };
+        pkgs = import nixpkgs {
+          inherit system;
+          config = {
+            allowUnfree = true;
+          };
+        };
 
         isLinux = pkgs.stdenv.isLinux;
         # The Bedrock Dependencies (Normalized across macOS/Linux/WSL — Pure pip edition)
         corePackages = (with pkgs; [
-          git curl sqlite tmux
+          git curl wget sqlite tmux figlet zlib cmake htop
           (python312.withPackages (ps: with ps; [ pip virtualenv ]))
         ]) ++ (with pkgs; pkgs.lib.optionals isLinux [
           gcc
@@ -57,6 +62,42 @@
           fi
           export VIRTUAL_ENV="$(pwd)/.venv"
           export PATH="$VIRTUAL_ENV/bin:$PATH"
+          export LD_LIBRARY_PATH=${pkgs.lib.makeLibraryPath corePackages}:$LD_LIBRARY_PATH
+        '';
+        runScript = pkgs.writeShellScriptBin "run-script" ''
+          #!/usr/bin/env bash
+          source .venv/bin/activate
+          if [ -f requirements.txt ]; then
+            echo "- Installing pip packages..."
+            if pip install --upgrade pip --quiet && pip install -r requirements.txt --quiet; then
+              package_count=$(pip list --format=freeze | wc -l)
+              echo "- Done. $package_count pip packages installed."
+            else
+              echo "Warning: An error occurred during pip setup."
+            fi
+          fi
+          if python -c "import numpy" 2>/dev/null; then
+            echo "- numpy is importable (good to go!)"
+            echo "To start JupyterLab, type: start"
+            echo "To stop JupyterLab, type: stop"
+          fi
+          cat << 'EOF' > .venv/bin/start
+          #!/bin/sh
+          echo "A JupyterLab tab will open in your default browser."
+          tmux kill-session -t jupyter 2>/dev/null || true
+          tmux new-session -d -s jupyter 'source .venv/bin/activate && jupyter lab --NotebookApp.token="" --NotebookApp.password="" --NotebookApp.disable_check_xsrf=True'
+          echo "If no tab opens, visit http://localhost:8888"
+          echo "To view JupyterLab server: tmux attach -t jupyter"
+          echo "To stop JupyterLab server: stop"
+          EOF
+          chmod +x .venv/bin/start
+          cat << 'EOF' > .venv/bin/stop
+          #!/bin/sh
+          echo "Stopping tmux session 'jupyter'..."
+          tmux kill-session -t jupyter 2>/dev/null || true
+          echo "The tmux session 'jupyter' has been stopped."
+          EOF
+          chmod +x .venv/bin/stop
         '';
 
       in {
@@ -74,6 +115,7 @@
             echo "=========================================================="
             echo " The 'No Problem' stack is very good."
             echo " Type 'python server.py' (or your app's entry point) to begin."
+            ${runScript}/bin/run-script
 
             ${pkgs.lib.optionalString isLinux ''
             if command -v nvidia-smi &> /dev/null; then
@@ -87,6 +129,23 @@
             }
             # --- ADDED: Visual Environment Anchor ---
             export PS1="(levinix) $PS1"
+          '';
+        };
+        devShells.quiet = pkgs.mkShell {
+          buildInputs = corePackages;
+          shellHook = ''
+            ${pythonSetupLogic}
+            ${pkgs.lib.optionalString isLinux ''
+            if command -v nvidia-smi &> /dev/null; then
+              export CUDA_HOME=${pkgs.cudatoolkit}
+              export PATH=$CUDA_HOME/bin:$PATH
+              export LD_LIBRARY_PATH=$CUDA_HOME/lib64:$LD_LIBRARY_PATH
+            fi
+            ''}
+            nix() {
+              LD_LIBRARY_PATH="" command nix "$@"
+            }
+            echo "Quiet Nix environment activated."
           '';
         };
       });

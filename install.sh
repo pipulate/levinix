@@ -20,7 +20,7 @@ if ! command -v nix &> /dev/null; then
     echo "=================================================================="
     echo "⚠️  CRITICAL: The universe has been built, but you must enter it."
     echo "Please CLOSE this terminal window, open a NEW one, and re-run:"
-    echo "curl -L https://levinix.com/install.sh | bash -s ${APP_NAME}"
+    echo "curl -fsSL https://levinix.org/install.sh | bash -s ${APP_NAME}"
     echo "=================================================================="
     exit 0
 fi
@@ -42,8 +42,12 @@ rm -rf "${TMP_ZIP}" "${TMP_EXTRACT}"
 # 4. Create the 'Double-Click' Actuator
 cat > "${TARGET_DIR}/run" << 'EOF'
 #!/usr/bin/env bash
-cd "$(dirname "$0")" 
-exec nix develop
+cd "$(dirname "$0")"
+if [[ "$(uname)" == "Darwin" ]]; then
+  exec nix develop --impure
+else
+  exec nix develop
+fi
 EOF
 chmod +x "${TARGET_DIR}/run"
 

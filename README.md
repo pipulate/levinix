@@ -8,7 +8,10 @@
 
 # Levinix: A *very good* "No Problem" Universal Packager (NPvg)
 
-> **2026 Architecture Note:** This repository preserves the minimal (~85-line, **pure `pip` + `virtualenv`**) reference extraction of the **Magic Cookie + Nix Flake** pattern. For the standalone **`uv`-accelerated** starter flake, see **[miklevin/python_nix_flake](https://github.com/miklevin/python_nix_flake)**. For the full production **Software Von Neumann Probe** (with multi-door white-labeling, FastHTML/HTMX local server, and the Prompt Fu context compiler), see **[pipulate/pipulate](https://github.com/pipulate/pipulate)** (`pipulate.com` / `levinix.org` / `sunpug.io`).
+> **2026 Architecture Note (The 3-Repo Trilogy):**
+> - **[pipulate/levinix](https://github.com/pipulate/levinix)** *(this repo)*: **The Electron-Killer WORA App Packager** — zero-git **Magic Cookie** (`curl | bash`) bootstrap + **The Triple-Quote Compromise** (immutable Nix C-library bedrock beneath a standard, writable `pip` + `virtualenv` `.venv`), with `.#default` and `.#quiet` shells and zero Nix learning curve.
+> - **[miklevin/python_nix_flake](https://github.com/miklevin/python_nix_flake)**: **The Docker-Killer Data Science & AI Agent Starter** — `git clone` workflow powered by Rust **`uv`** (`python313`), instant `start`/`stop` JupyterLab `tmux` helpers, and `.#default` / `.#quiet` dual shells for humans and AI coding agents.
+> - **[pipulate/pipulate](https://github.com/pipulate/pipulate)** (`pipulate.com` / `levinix.org` / `npvg.org` / `qamy.ai`): **The Forever Machine (Software Von Neumann Probe)** — the full local-first FastHTML/HTMX workshop, multi-door white-label installer, and Prompt Fu context compiler.
 
 Write once run anywhere (WORA), solving the "It works on my machine" problem without the cloud.
 
@@ -37,7 +40,7 @@ We have engineered a frictionless deployment pipeline. You do not need to clone 
 To deploy a new, sovereign Levinix environment (we will call it `MyKillerApp`), simply run this command in your terminal:
 
 ```bash
-curl -L [https://levinix.com/install.sh](https://levinix.com/install.sh) | bash -s MyKillerApp
+curl -fsSL https://levinix.org/install.sh | bash -s MyKillerApp
 ```
 
 ### What happens when you run this?
@@ -62,7 +65,7 @@ You will be greeted with the Levinix visual anchor in your terminal prompt:
 
 ## Understanding the Architecture
 
-You can view the complete Nix flake configuration at [https://github.com/pipulate/levinix/blob/main/flake.nix](https://www.google.com/search?q=https://github.com/pipulate/levinix/blob/main/flake.nix).
+You can view the complete Nix flake configuration at [https://github.com/pipulate/levinix/blob/main/flake.nix](https://github.com/pipulate/levinix/blob/main/flake.nix).
 
 Here's a brief guide to understanding its structure:
 
